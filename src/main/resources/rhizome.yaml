@@ -1,0 +1,20 @@
+##
+# Rhizome Bootstrap Configuration
+##
+
+# Set to false to disable persistence 
+enable-persistence:  false
+session-clustering-enabled: false
+
+hazelcast:
+    server: true
+    group: "local"
+    password: "trellis"
+    seed-nodes: 
+        - "localhost"
+
+spark:
+    appname: "Socrates Trainer"
+    port: 7077
+    master:
+        - "local[8]"
