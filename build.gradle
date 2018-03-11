@@ -1,5 +1,6 @@
 plugins {
     id "application"
+    id 'org.jetbrains.kotlin.jvm' version '1.2.30'
     id "java"
     id "eclipse"
     id "idea"
@@ -19,6 +20,7 @@ ext.connectionUrl = 'scm:git:https://github.com/openlattice/socrates.git'
 ext.developerConnectionUrl = 'scm:git:https://github.com/openlattice/socrates.git'
 
 apply from: "https://raw.githubusercontent.com/openlattice/gradles/master/openlattice.gradle"
+apply plugin: 'kotlin'
 
 def SOCRATES_XMS = "$System.env.SOCRATES_XMS"
 def SOCRATES_XMX = "$System.env.SOCRATES_XMX"
