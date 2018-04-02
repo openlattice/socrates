@@ -51,10 +51,6 @@ public enum PersonMetric {
     LAST_NAME_LHS_PRESENCE( lhs( Person::getHasLastName ) ),
     LAST_NAME_RHS_PRESENCE( rhs( Person::getHasLastName ) ),
 
-    //    SSN_STRING( jaroWinkler( Person::getSsn ) ),
-    //    SSN_LHS_PRESENCE( lhs( Person::getHasSsn ) ),
-    //    SSN_RHS_PRESENCE( rhs( Person::getHasSsn ) ),
-
     SEX_STRING( jaroWinkler( Person::getSex ) ),
     SEX_LHS_PRESENCE( lhs( Person::getHasSex ) ),
     SEX_RHS_PRESENCE( rhs( Person::getHasSex ) ),
@@ -93,18 +89,6 @@ public enum PersonMetric {
 
     private double extract( Person lhs, Person rhs ) {
         return this.metric.extract( lhs, rhs );
-    }
-
-    public static StructType getSchema() {
-        return schema;
-    }
-
-    public static Double[] distance( Person lhs, Person rhs ) {
-        Double[] result = new Double[ metrics.length ];
-        for ( int i = 0; i < result.length; ++i ) {
-            result[ i ] = metrics[ i ].extract( lhs, rhs );
-        }
-        return result;
     }
 
     public static double[] pDistance( Person lhs, Person rhs ) {

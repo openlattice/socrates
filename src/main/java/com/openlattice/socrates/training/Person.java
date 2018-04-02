@@ -63,17 +63,6 @@ public class Person implements Serializable {
                 perturb && RandomUtils.nextBoolean() ? null : row.getAs( "ethnicity" )
 
         );
-
-        //        this(
-        //                UUID.fromString( row.getString( 0 ) ),
-        //                perturb && RandomUtils.nextBoolean() ? null : row.getString(1),
-        //                perturb && RandomUtils.nextBoolean() ? null : row.getString(2),
-        //                perturb && RandomUtils.nextBoolean() ? null : row.getString(3),
-        //                perturb && RandomUtils.nextBoolean() ? null : row.getString(4),
-        //                perturb && RandomUtils.nextBoolean() ? null : tryParseDob( row ),
-        //                perturb && RandomUtils.nextBoolean() ? null : row.getString(6)
-        //
-        //        );
     }
 
     public Person( Person p, boolean perturb ) {
