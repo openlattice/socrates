@@ -71,6 +71,9 @@ configurations {
 }
 
 configurations.all {
+    resolutionStrategy {
+        force 'com.fasterxml.jackson.core:jackson-core:2.6.7','com.fasterxml.jackson.core:jackson-databind:2.6.7','com.fasterxml.jackson.module:jackson-module-afterburner:2.6.7','com.fasterxml.jackson.datatype:jackson-datatype-guava:2.6.7','com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.6.7','com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.6.7','com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.6.7','com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.6.7'
+    }
     exclude module: 'slf4j-log4j12'
     exclude group: 'asm', module: 'asm'
 }
@@ -86,21 +89,14 @@ dependencies {
     compile 'commons-cli:commons-cli:1.4'
     compile 'org.deeplearning4j:deeplearning4j-core:0.9.1'
 
-    compile 'org.nd4j:nd4j-cuda-8.0-platform:0.9.1'
     compile 'org.nd4j:nd4j-native-platform:0.9.1'
     compile 'org.datavec:datavec-api:0.9.1'
 
-    compile 'org.deeplearning4j:deeplearning4j-parallel-wrapper_2.11:0.9.1'
     compile 'org.deeplearning4j:dl4j-spark_2.11:0.9.1_spark_2'
     compile 'org.deeplearning4j:deeplearning4j-ui_2.11:0.9.1'
     compile('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
     compile('org.apache.hadoop:hadoop-common:2.7.2') {force = true}
     compile('org.apache.hadoop:hadoop-client:2.7.2') {force = true}
-//    compile "org.apache.spark:spark-core_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-sql_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-mllib_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-graphx_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-streaming_2.11:${spark_version}"
     compile "org.ow2.asm:asm:5.0.4"
 
     if (project.hasProperty('developmentMode') && project.developmentMode) {

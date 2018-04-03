@@ -38,6 +38,7 @@ public class Person implements Serializable {
     private static DateTimeHelper dtHelper2 = new DateTimeHelper( DateTimeZone.UTC, "yyyy-MM-dd" );
     private static DecimalFormat  dd        = new DecimalFormat( "00" );
     private final UUID             trainingId;
+    private final int intId;
     private final Optional<String> firstName;
     private final Optional<String> lastName;
     private final Optional<String> sex;
@@ -54,6 +55,7 @@ public class Person implements Serializable {
     public Person( Row row, boolean perturb ) {
         this(
                 UUID.fromString( row.getAs( "trainingId" ) ),
+                tryParseID( row ),
                 row.getAs( "firstName" ),
                 row.getAs( "lastName" ),
                 perturb && RandomUtils.nextBoolean() ? null : row.getAs( "sex" ),
@@ -67,6 +69,7 @@ public class Person implements Serializable {
 
     public Person( Person p, boolean perturb ) {
         this.trainingId = UUID.fromString( p.getTrainingId() );
+        this.intId = p.getintId() ;
         this.firstName = Optional.fromNullable( p.getFirstName() );
         this.lastName = Optional.fromNullable( p.getLastName() );
         this.sex = Optional.fromNullable( perturb && RandomUtils.nextBoolean() ? null : p.getSex() );
@@ -84,6 +87,7 @@ public class Person implements Serializable {
 
     public Person(
             UUID trainingId,
+            int intId,
             String firstName,
             String lastName,
             String sex,
@@ -94,6 +98,7 @@ public class Person implements Serializable {
         this.trainingId = trainingId;
         this.firstName = Optional.fromNullable( firstName );
         this.lastName = Optional.fromNullable( lastName );
+        this.intId =  intId ;
         this.sex = Optional.fromNullable( sex );
         this.ssn = Optional.fromNullable( ssn );
         this.dob = dob == null ? Optional.absent() : Optional.fromNullable( dob.toString() );
@@ -115,6 +120,10 @@ public class Person implements Serializable {
 
     public UUID getId() {
         return trainingId;
+    }
+
+    public int getintId() {
+        return Integer.valueOf(intId);
     }
 
     public String getTrainingId() {
@@ -210,5 +219,12 @@ public class Person implements Serializable {
             return dtHelper2.parseLDT( dob );
         }
         return dtHelper.parseLDT( dob );
+    }
+
+    private static int tryParseID( Row row ) {
+        String id = row.getAs( "intId" );
+        int integerid = Integer.parseInt( id );
+
+        return integerid;
     }
 }

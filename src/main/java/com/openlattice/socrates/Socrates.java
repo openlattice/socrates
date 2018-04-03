@@ -28,6 +28,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.openlattice.socrates.training.Person;
+import com.openlattice.socrates.training.PersonID;
 import com.openlattice.socrates.training.PersonLabel;
 import com.openlattice.socrates.training.PersonMetric;
 import com.openlattice.socrates.training.SocratesCli;
@@ -205,7 +206,7 @@ public class Socrates {
                         for ( int i = start; i < limit; ++i ) {
                             features[ i ] = PersonMetric
                                     .pDistance( person, i < people.size() ? people.get( i ) : new Person( person, true ) );
-                        }
+                          }
 
                         for ( int i = start; i < limit; ++i ) {
                             labels[ i ] = PersonLabel
@@ -223,17 +224,39 @@ public class Socrates {
         Stopwatch w = Stopwatch.createStarted();
         double[][] features = new double[ 2 * otherPeople.size() ][ 0 ];
         double[][] labels = new double[ 2 * otherPeople.size() ][ 0 ];
+        double[][] ids = new double[ 2 * otherPeople.size() ][ 0 ];
 
         for ( int i = 0, j = 0; i < features.length; i += 2, ++j ) {
             Person matchingPerson = matchingExamples.get( j % matchingExamples.size() );
             Person otherPerson = otherPeople.get( j );
             features[ i ] = PersonMetric.pDistance( a, otherPerson );
             labels[ i ] = PersonLabel.pDistance( a, otherPerson );
+            ids [ i ] = PersonID.pDistance( a, otherPerson );
             features[ i + 1 ] = PersonMetric.pDistance( a, matchingPerson );
             labels[ i + 1 ] = PersonLabel.pDistance( a, matchingPerson );
+            ids [ i + 1 ] = PersonID.pDistance( a, matchingPerson );
         }
         logger.debug( "Generated {} sample dataset in {} ms", features.length, w.elapsed( TimeUnit.MILLISECONDS ) );
-        return new DataSet( Nd4j.create( features ), Nd4j.create( labels ) );
+        INDArray arr1 = Nd4j.create( features );
+        INDArray arr2 = Nd4j.create( labels );
+        INDArray arr3 = Nd4j.create( ids );
+
+        Random rand = new Random();
+        int n=rand.nextInt(1000000);
+        StringBuilder ft = new StringBuilder();
+        ft.append("/Users/jokedurnez/Documents/projects/socrates/data/features/features_");
+        ft.append(n);
+        Nd4j.writeTxt(arr1,ft.toString());
+        StringBuilder lb = new StringBuilder();
+        lb.append("/Users/jokedurnez/Documents/projects/socrates/data/features/labels_");
+        lb.append(n);
+        Nd4j.writeTxt(arr2,lb.toString());
+        StringBuilder andr = new StringBuilder();
+        andr.append("/Users/jokedurnez/Documents/projects/socrates/data/features/pairs_");
+        andr.append(n);
+        Nd4j.writeTxt(arr3,andr.toString());
+
+        return new DataSet( arr1 , arr2 );
     }
 
     public static void saveModel( File file, MultiLayerNetwork model ) throws IOException {
@@ -249,7 +272,7 @@ public class Socrates {
         int outputNum = PersonLabel.values().length;
         int iterations = 1;
         int exampleCount = 512;
-        int epochCount = 10;
+        int epochCount = 1;
         int dataIterations = iterations * exampleCount;
 
         final ListMultimap<UUID, Person> peopleById = ArrayListMultimap.create();
