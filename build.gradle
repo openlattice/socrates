@@ -49,7 +49,7 @@ if (GC == 'null' || GC == null || GC == "") {
 }
 
 
-mainClassName = "com.openlattice.socrates.Socrates"
+mainClassName = "com.openlattice.socrates"
 applicationDefaultJvmArgs = [SOCRATES_XMS, SOCRATES_XMX, "-server", PARALLEL, GC]
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -70,9 +70,18 @@ configurations {
     provided
 }
 
+final jacksonversion = "2.6.7"
+
 configurations.all {
     resolutionStrategy {
-        force 'com.fasterxml.jackson.core:jackson-core:2.6.7','com.fasterxml.jackson.core:jackson-databind:2.6.7','com.fasterxml.jackson.module:jackson-module-afterburner:2.6.7','com.fasterxml.jackson.datatype:jackson-datatype-guava:2.6.7','com.fasterxml.jackson.dataformat:jackson-dataformat-smile:2.6.7','com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.6.7','com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.6.7','com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.6.7'
+        force "com.fasterxml.jackson.core:jackson-core:${jacksonversion}",
+                "com.fasterxml.jackson.core:jackson-databind:${jacksonversion}",
+                "com.fasterxml.jackson.module:jackson-module-afterburner:${jacksonversion}",
+                "com.fasterxml.jackson.datatype:jackson-datatype-guava:${jacksonversion}",
+                "com.fasterxml.jackson.dataformat:jackson-dataformat-smile:${jacksonversion}",
+                "com.fasterxml.jackson.module:jackson-module-jaxb-annotations:${jacksonversion}",
+                "com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:${jacksonversion}",
+                "com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:${jacksonversion}"
     }
     exclude module: 'slf4j-log4j12'
     exclude group: 'asm', module: 'asm'
