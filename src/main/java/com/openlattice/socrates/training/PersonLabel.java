@@ -31,10 +31,10 @@ import org.apache.spark.sql.types.StructType;
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public enum PersonLabel {
-    MATCH( PersonLabel::isMatch )
+    MATCH( PersonLabel::isMatch );
     //    ;
-    ,
-    NOT_MATCH( PersonLabel::isNotMatch );
+//    ,
+//    NOT_MATCH( PersonLabel::isNotMatch );
 
     private static final PersonMetric[] metrics = PersonMetric.values();
     private static final PersonLabel[]  labels  = PersonLabel.values();
@@ -66,16 +66,8 @@ public enum PersonLabel {
         return this.label.extract( lhs, rhs );
     }
 
-    public static StructType getSchema() {
-        return schema;
-    }
-
     public static double isMatch( Person lhs, Person rhs ) {
         return lhs.isMatch( rhs );
-    }
-
-    public static double isNotMatch( Person lhs, Person rhs ) {
-        return 1.0 - lhs.isMatch( rhs );
     }
 
     public static double[] pDistance( Person lhs, Person rhs ) {

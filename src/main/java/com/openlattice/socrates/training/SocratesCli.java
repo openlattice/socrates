@@ -36,6 +36,7 @@ public final class SocratesCli {
     public static  String            PEOPLE  = "people";
     public static  String            WORKERS = "workers";
     public static  String            SAMPLES = "samples";
+    public static  String            FEATDIR = "featdir";
 
     private static Options           options = new Options();
     private static CommandLineParser clp     = new DefaultParser();
@@ -51,6 +52,7 @@ public final class SocratesCli {
                 true,
                 "Number of samples to use from people file. If not specified all samples will be used." );
         options.addOption( WORKERS, true, "Number of worker threads to use. Defaults to number of processors." );
+        options.addOption( FEATDIR, true, "Directory where to output features." );
 
     }
 

@@ -21,9 +21,13 @@
 package com.openlattice.socrates.training;
 
 import com.google.common.base.Optional;
+
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.UUID;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.spark.sql.Row;
@@ -190,6 +194,8 @@ public class Person implements Serializable {
         return trainingId.equals( other.trainingId ) ? 1 : 0;
     }
 
+
+
     @Override public boolean equals( Object o ) {
         if ( this == o ) { return true; }
         if ( !( o instanceof Person ) ) { return false; }
@@ -226,5 +232,40 @@ public class Person implements Serializable {
         int integerid = Integer.parseInt( id );
 
         return integerid;
+    }
+
+    public double getProba(boolean first) {
+        double prob = 0;
+        try {
+            String splitBy = ",";
+            String namefile = "";
+            if (first == true) {
+                namefile = "/Users/jokedurnez/Documents/projects/socrates/data/firstnames.csv";
+            } else {
+                namefile = "/Users/jokedurnez/Documents/projects/socrates/data/lastnames.csv";
+
+            }
+            BufferedReader br = new BufferedReader(new FileReader(namefile));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] b = line.split(splitBy);
+                if ( this.firstName.isPresent() && this.firstName.get().toLowerCase().equals(b[1].toLowerCase())) {
+                    prob = Double.parseDouble(b[2]);
+                    break;
+                }
+            }
+            br.close();
+        } catch (IOException e){
+            throw new RuntimeException(e);
+        }
+        return prob;
+    }
+
+    public double getFirstProba() {
+        return getProba(true);
+    }
+
+    public double getLastProba() {
+        return getProba(false);
     }
 }

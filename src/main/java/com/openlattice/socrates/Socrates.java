@@ -28,7 +28,6 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.openlattice.socrates.training.Person;
-import com.openlattice.socrates.training.PersonID;
 import com.openlattice.socrates.training.PersonLabel;
 import com.openlattice.socrates.training.PersonMetric;
 import com.openlattice.socrates.training.SocratesCli;
@@ -193,72 +192,6 @@ public class Socrates {
         System.exit( 0 );
     }
 
-    public static DataSet toBigDataSet( Person person, List<Person> people ) {
-        double[][] features = new double[ 2 * people.size() ][ 0 ];
-        double[][] labels = new double[ 2 * people.size() ][ 0 ];
-
-        int increment = features.length / ThreadpoolHelper.procs;
-        List<ListenableFuture> futures = new ArrayList( ThreadpoolHelper.procs );
-        for ( int base = 0; base < features.length; ) {
-            final int start = base;
-            final int limit = Math.min( base + increment, features.length );
-            futures.add( ThreadpoolHelper.executor.submit( () -> {
-                        for ( int i = start; i < limit; ++i ) {
-                            features[ i ] = PersonMetric
-                                    .pDistance( person, i < people.size() ? people.get( i ) : new Person( person, true ) );
-                          }
-
-                        for ( int i = start; i < limit; ++i ) {
-                            labels[ i ] = PersonLabel
-                                    .pDistance( person, i < people.size() ? people.get( i ) : new Person( person, true ) );
-                        }
-                    }
-            ) );
-            base = limit;
-        }
-        futures.forEach( StreamUtil::getUninterruptibly );
-        return new DataSet( Nd4j.create( features ), Nd4j.create( labels ) );
-    }
-
-    public static DataSet toBalancedDataSet( Person a, List<Person> matchingExamples, List<Person> otherPeople ) {
-        Stopwatch w = Stopwatch.createStarted();
-        double[][] features = new double[ 2 * otherPeople.size() ][ 0 ];
-        double[][] labels = new double[ 2 * otherPeople.size() ][ 0 ];
-        double[][] ids = new double[ 2 * otherPeople.size() ][ 0 ];
-
-        for ( int i = 0, j = 0; i < features.length; i += 2, ++j ) {
-            Person matchingPerson = matchingExamples.get( j % matchingExamples.size() );
-            Person otherPerson = otherPeople.get( j );
-            features[ i ] = PersonMetric.pDistance( a, otherPerson );
-            labels[ i ] = PersonLabel.pDistance( a, otherPerson );
-            ids [ i ] = PersonID.pDistance( a, otherPerson );
-            features[ i + 1 ] = PersonMetric.pDistance( a, matchingPerson );
-            labels[ i + 1 ] = PersonLabel.pDistance( a, matchingPerson );
-            ids [ i + 1 ] = PersonID.pDistance( a, matchingPerson );
-        }
-        logger.debug( "Generated {} sample dataset in {} ms", features.length, w.elapsed( TimeUnit.MILLISECONDS ) );
-        INDArray arr1 = Nd4j.create( features );
-        INDArray arr2 = Nd4j.create( labels );
-        INDArray arr3 = Nd4j.create( ids );
-
-        Random rand = new Random();
-        int n=rand.nextInt(1000000);
-        StringBuilder ft = new StringBuilder();
-        ft.append("/Users/jokedurnez/Documents/projects/socrates/data/features/features_");
-        ft.append(n);
-        Nd4j.writeTxt(arr1,ft.toString());
-        StringBuilder lb = new StringBuilder();
-        lb.append("/Users/jokedurnez/Documents/projects/socrates/data/features/labels_");
-        lb.append(n);
-        Nd4j.writeTxt(arr2,lb.toString());
-        StringBuilder andr = new StringBuilder();
-        andr.append("/Users/jokedurnez/Documents/projects/socrates/data/features/pairs_");
-        andr.append(n);
-        Nd4j.writeTxt(arr3,andr.toString());
-
-        return new DataSet( arr1 , arr2 );
-    }
-
     public static void saveModel( File file, MultiLayerNetwork model ) throws IOException {
         logger.info( "\n\n\n*************  SAVING MODEL *************\n\n\n" );
         ModelSerializer.writeModel( model, file, true );
@@ -271,7 +204,7 @@ public class Socrates {
         int numInputs = PersonMetric.values().length;
         int outputNum = PersonLabel.values().length;
         int iterations = 1;
-        int exampleCount = 512;
+        int exampleCount = 10000;
         int epochCount = 1;
         int dataIterations = iterations * exampleCount;
 
@@ -302,22 +235,26 @@ public class Socrates {
                 //.regularization( true ).l2( 1 )
                 //                .gradientNormalization( GradientNormalization.ClipL2PerLayer )
                 //                .gradientNormalizationThreshold( .1 )
-                .learningRate( .1 )
+                .learningRate( .000201 )
                 .list()
                 .backprop( true )
-                .layer( 0, new DenseLayer.Builder().nIn( numInputs ).nOut( 2 * numInputs )
+                .layer( 0, new DenseLayer.Builder().nIn( numInputs ).nOut( 2 )
                         .build() )
-                .layer( 1, new DenseLayer.Builder().nIn( 2*numInputs ).nOut( numInputs )
-                        .build() )
-                .layer( 2, new OutputLayer.Builder( LossFunction.NEGATIVELOGLIKELIHOOD )
+//                .layer( 1, new DenseLayer.Builder().nIn( 500 ).nOut( 500 )
+//                        .build() )
+//                .layer( 2, new DenseLayer.Builder().nIn( 500 ).nOut( 500 )
+//                        .build() )
+//                .layer( 3, new DenseLayer.Builder().nIn( 500 ).nOut( 500 )
+//                        .build() )
+                .layer( 1, new OutputLayer.Builder( LossFunction.NEGATIVELOGLIKELIHOOD )
                         .activation( Activation.SOFTMAX )
-                        .nIn( numInputs ).nOut( outputNum ).build() )
+                        .nIn( 2 ).nOut( outputNum ).build() )
                 .build();
         MultiLayerNetwork model = new MultiLayerNetwork( conf );
         model.init();
 
-        model.setListeners( new PerformanceListener( 4 * dataIterations ),
-                new ScoreIterationListener( 4 * dataIterations ),
+        model.setListeners( new PerformanceListener( dataIterations ),
+                new ScoreIterationListener( dataIterations ),
                 new StatsListener( statsStorage ) );
 
         AtomicInteger i = new AtomicInteger( 0 );
@@ -374,6 +311,53 @@ public class Socrates {
                                         .map( others ->
                                                 toBalancedDataSet( person, matchingPeople, others ) ) );
 
+    }
+
+    public static DataSet toBigDataSet( Person person, List<Person> people ) {
+        double[][] features = new double[ 2 * people.size() ][ 0 ];
+        double[][] labels = new double[ 2 * people.size() ][ 0 ];
+
+        int increment = features.length / ThreadpoolHelper.procs;
+        List<ListenableFuture> futures = new ArrayList( ThreadpoolHelper.procs );
+        for ( int base = 0; base < features.length; ) {
+            final int start = base;
+            final int limit = Math.min( base + increment, features.length );
+            futures.add( ThreadpoolHelper.executor.submit( () -> {
+                        for ( int i = start; i < limit; ++i ) {
+                            features[ i ] = PersonMetric
+                                    .pDistance( person, i < people.size() ? people.get( i ) : new Person( person, true ) );
+                        }
+
+                        for ( int i = start; i < limit; ++i ) {
+                            labels[ i ] = PersonLabel
+                                    .pDistance( person, i < people.size() ? people.get( i ) : new Person( person, true ) );
+                        }
+                    }
+            ) );
+            base = limit;
+        }
+        futures.forEach( StreamUtil::getUninterruptibly );
+        return new DataSet( Nd4j.create( features ), Nd4j.create( labels ) );
+    }
+
+    public static DataSet toBalancedDataSet( Person a, List<Person> matchingExamples, List<Person> otherPeople ) {
+        Stopwatch w = Stopwatch.createStarted();
+        double[][] features = new double[ 2 * otherPeople.size() ][ 0 ];
+        double[][] labels = new double[ 2 * otherPeople.size() ][ 0 ];
+
+        for ( int i = 0, j = 0; i < features.length; i += 2, ++j ) {
+            Person matchingPerson = matchingExamples.get( j % matchingExamples.size() );
+            Person otherPerson = otherPeople.get( j );
+            features[ i ] = PersonMetric.pDistance( a, otherPerson );
+            labels[ i ] = PersonLabel.pDistance( a, otherPerson );
+            features[ i + 1 ] = PersonMetric.pDistance( a, matchingPerson );
+            labels[ i + 1 ] = PersonLabel.pDistance( a, matchingPerson );
+        }
+        logger.debug( "Generated {} sample dataset in {} ms", features.length, w.elapsed( TimeUnit.MILLISECONDS ) );
+        INDArray arr1 = Nd4j.create( features );
+        INDArray arr2 = Nd4j.create( labels );
+
+        return new DataSet( arr1 , arr2 );
     }
 
 }
