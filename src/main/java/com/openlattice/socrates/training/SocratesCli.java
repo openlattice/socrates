@@ -37,6 +37,8 @@ public final class SocratesCli {
     public static  String            WORKERS = "workers";
     public static  String            SAMPLES = "samples";
     public static  String            FEATDIR = "featdir";
+    public static  String            DNNMOD = "dnnmodel";
+    public static  String            DNNWGT = "dnnweight";
 
     private static Options           options = new Options();
     private static CommandLineParser clp     = new DefaultParser();
@@ -53,6 +55,8 @@ public final class SocratesCli {
                 "Number of samples to use from people file. If not specified all samples will be used." );
         options.addOption( WORKERS, true, "Number of worker threads to use. Defaults to number of processors." );
         options.addOption( FEATDIR, true, "Directory where to output features." );
+        options.addOption( DNNMOD, true, "Place to get the DNN keras model." );
+        options.addOption( DNNWGT, true, "Place to get the DNN weights." );
 
     }
 

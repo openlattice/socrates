@@ -1,51 +1,26 @@
 package com.openlattice.socrates;
 
-import com.dataloom.streams.StreamUtil;
-import com.google.common.base.Preconditions;
-import com.google.common.util.concurrent.ListenableFuture;
 import com.openlattice.socrates.training.*;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.io.FileExistsException;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
-import org.apache.spark.sql.Encoders;
 import org.deeplearning4j.eval.Evaluation;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
-import org.deeplearning4j.api.storage.StatsStorage;
-import org.deeplearning4j.datasets.iterator.IteratorDataSetIterator;
-import org.deeplearning4j.eval.Evaluation;
 import org.deeplearning4j.nn.modelimport.keras.InvalidKerasConfigurationException;
 import org.deeplearning4j.nn.modelimport.keras.KerasModelImport;
-import org.deeplearning4j.nn.api.OptimizationAlgorithm;
-import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
-import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
-import org.deeplearning4j.nn.conf.layers.DenseLayer;
-import org.deeplearning4j.nn.conf.layers.OutputLayer;
 import org.deeplearning4j.nn.modelimport.keras.UnsupportedKerasConfigurationException;
 import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
-import org.deeplearning4j.nn.weights.WeightInit;
-import org.deeplearning4j.optimize.listeners.PerformanceListener;
-import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
-import org.deeplearning4j.ui.api.UIServer;
-import org.deeplearning4j.ui.stats.StatsListener;
-import org.deeplearning4j.ui.storage.InMemoryStatsStorage;
-import org.deeplearning4j.util.ModelSerializer;
-//import org.nd4j.jita.conf.CudaEnvironment;
-import org.nd4j.linalg.activations.Activation;
 import org.nd4j.linalg.api.ndarray.INDArray;
 import org.nd4j.linalg.dataset.DataSet;
 import org.nd4j.linalg.factory.Nd4j;
-import org.nd4j.linalg.lossfunctions.LossFunctions.LossFunction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class Predictor {
 
@@ -53,10 +28,28 @@ public class Predictor {
 
     public static void main( String[] args ) throws IOException,InvalidKerasConfigurationException,UnsupportedKerasConfigurationException {
 
+        final CommandLine cl;
+        final String peopleCSV;
+        final String keras_model;
+        final String keras_weights;
+        try {
+            cl = SocratesCli.parseCommandLine( args );
+
+            peopleCSV = cl.getOptionValue( SocratesCli.PEOPLE );
+            keras_model = cl.getOptionValue( SocratesCli.DNNMOD );
+            keras_weights = cl.getOptionValue( SocratesCli.DNNWGT );
+
+        } catch ( ParseException e ) {
+            logger.error( "Unable to parse command line", e );
+            SocratesCli.printHelp();
+            throw new IllegalArgumentException( "Invalid command line.", e );
+        } catch ( NumberFormatException | IllegalStateException e ) {
+            logger.error( "Invalid argument: {}", e.getMessage() );
+            SocratesCli.printHelp();
+            throw new IllegalArgumentException( "Invalid command line.", e );
+        }
+
         // MANUAL ARGUMENTS
-        final String peopleCSV = "/Users/jokedurnez/Documents/projects/socrates/data/Fake_original/people_newlist.csv";
-        final String keras_model = "/Users/jokedurnez/Documents/projects/socrates/data/keras_model.json";
-        final String keras_weights = "/Users/jokedurnez/Documents/projects/socrates/data/keras_weights.h5";
         final int limit = 100;
         MultiLayerNetwork model = KerasModelImport.importKerasSequentialModelAndWeights(keras_model,keras_weights);
 

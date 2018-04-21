@@ -49,12 +49,14 @@ if (GC == 'null' || GC == null || GC == "") {
 }
 
 
-mainClassName = "com.openlattice.socrates.Socrates"
 applicationDefaultJvmArgs = [SOCRATES_XMS, SOCRATES_XMX, "-server", PARALLEL, GC]
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
 println "Using java args for running ${projectName}: " + Arrays.toString( applicationDefaultJvmArgs )
+
+
+mainClassName = "com.openlattice.socrates.Extractor"
 
 run {
     if (S_ARGS != null) {
@@ -67,6 +69,7 @@ run {
     }
 
 }
+
 
 println "Enabled profiles: " + Arrays.toString(run.args)
 
@@ -98,7 +101,10 @@ sourceSets {
 }
 
 dependencies {
-    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${jackson_version}"
+    compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${jacksonversion}"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-guava:${jacksonversion}"
+    compile "com.fasterxml.jackson.module:jackson-module-afterburner:${jacksonversion}"
+
     compile 'commons-cli:commons-cli:1.4'
     compile 'org.deeplearning4j:deeplearning4j-core:0.9.1'
 
@@ -114,12 +120,8 @@ dependencies {
 
     if (project.hasProperty('developmentMode') && project.developmentMode) {
         logger.quiet(project.name + " using project dependencies.")
-        compile project(":rhizome")
-        compile project(":conductor-client")
     } else {
         logger.quiet(project.name + " using jar dependencies.")
-        compile "com.openlattice:rhizome:${rhizome_version}"
-        compile "com.openlattice:conductor-client:${conductor_client_version}"
     }
     /*
      * TESTING
