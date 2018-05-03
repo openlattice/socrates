@@ -20,7 +20,6 @@
 
 package com.openlattice.socrates;
 
-import com.dataloom.streams.StreamUtil;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.ArrayListMultimap;
