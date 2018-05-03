@@ -26,15 +26,18 @@ public class Extractor {
         final String peopleCSV;
         final String featdir;
         final int workers;
+        final int ID;
         final Optional<Integer> limit;
         try {
             cl = SocratesCli.parseCommandLine( args );
 
             Preconditions.checkArgument( cl.hasOption( "people" ), "People input file must be specified!" );
             Preconditions.checkArgument( cl.hasOption( "featdir" ), "Feature directory must be specified!" );
+            Preconditions.checkArgument( cl.hasOption( "id" ), "Id must be specified." );
 
             peopleCSV = cl.getOptionValue( SocratesCli.PEOPLE );
             featdir = cl.getOptionValue( SocratesCli.FEATDIR );
+            ID = Integer.parseInt( cl.getOptionValue( SocratesCli.ID ) );
 
             if ( cl.hasOption( SocratesCli.WORKERS ) ) {
                 workers = Integer.parseInt( cl.getOptionValue( SocratesCli.WORKERS ) );
@@ -83,26 +86,31 @@ public class Extractor {
 
         // GET FEATURES
 
-        getFeatures(personList, featdir, writeLabels);
+        getFeatures(personList, featdir, writeLabels, ID);
 
         System.exit( 0 );
     }
 
-    public static void getFeatures(List<Person> personList,String featuredir, Boolean writeLabels) {
+    public static void getFeatures(List<Person> personList,String featuredir, Boolean writeLabels, int ID) {
+
         AtomicInteger index = new AtomicInteger();
         System.out.println(personList.size());
 
-        final int numfiles = personList
-                .parallelStream()
-                .mapToInt(person -> toBigDataSet(person, personList, featuredir, writeLabels))
-                .sum();
-        System.out.println("_________________________");
-        System.out.println(numfiles);
+        Person ThisPerson = personList.get(ID);
+
+        toBigDataSet(ThisPerson, personList, featuredir, writeLabels, ID);
+
+//        final int numfiles = personList
+//                .parallelStream()
+//                .mapToInt(person -> toBigDataSet(person, personList, featuredir, writeLabels))
+//                .sum();
+//        System.out.println("_________________________");
+//        System.out.println(numfiles);
     }
 
-    public static int toBigDataSet( Person person, List<Person> people, String featuredir, Boolean writeLabels) {
+    public static int toBigDataSet( Person person, List<Person> people, String featuredir, Boolean writeLabels, int ID) {
 
-        int intId = person.getintId();
+        int intId = ID;
         String ft = featuredir+"features_"+intId;
         File ftfile = new File(ft);
         if (ftfile.exists()){
