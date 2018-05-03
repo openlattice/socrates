@@ -39,6 +39,7 @@ public final class SocratesCli {
     public static  String            FEATDIR = "featdir";
     public static  String            DNNMOD = "dnnmodel";
     public static  String            DNNWGT = "dnnweight";
+    public static  String            ID = "id";
 
     private static Options           options = new Options();
     private static CommandLineParser clp     = new DefaultParser();
@@ -57,6 +58,7 @@ public final class SocratesCli {
         options.addOption( FEATDIR, true, "Directory where to output features." );
         options.addOption( DNNMOD, true, "Place to get the DNN keras model." );
         options.addOption( DNNWGT, true, "Place to get the DNN weights." );
+        options.addOption( ID, true, "The id for which we want to extract the features." );
 
     }
 
