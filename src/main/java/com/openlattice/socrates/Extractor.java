@@ -117,7 +117,9 @@ public class Extractor {
             System.out.println(ft+" already exists ! yay !");
             return 1;
         }
-        List<Person> smallist = people.subList(intId,people.size());
+        // List<Person> smallist = people.subList(intId,people.size());
+        // Always compare to all previous subjects: allows mew subjects to be added
+        List<Person> smallist = people.subList(0,intId);
 
         double[][] features = new double[ smallist.size() ][ 0 ];
 
