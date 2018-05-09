@@ -18,3 +18,6 @@ logging/
 # source maps
 *.css.map
 *.js.map
+
+.DS_Store
+deps.txt
