@@ -73,7 +73,10 @@ public enum PersonMetric {
 
     SSN_STRING( jaroWinkler( Person::getSsn ) ),
     SSN_LHS_PRESENCE( lhs( Person::getHasSsn ) ),
-    SSN_RHS_PRESENCE( rhs( Person::getHasSsn ) );
+    SSN_RHS_PRESENCE( rhs( Person::getHasSsn ) ),
+
+    INTID_1( lhs( Person::getintId ) ),
+    INTID_2( rhs( Person::getintId ) );
 
     private static final PersonMetric[] metrics = PersonMetric.values();
     private static final DoubleMetaphone doubleMetaphone = new DoubleMetaphone();
