@@ -84,15 +84,15 @@ sourceSets {
 dependencies {
     compile "com.fasterxml.jackson.dataformat:jackson-dataformat-csv:${jackson_version}"
     compile 'commons-cli:commons-cli:1.4'
-    compile 'org.deeplearning4j:deeplearning4j-core:0.9.1'
+    compile "org.deeplearning4j:deeplearning4j-core:${deeplearning4j}"
 
-    compile 'org.nd4j:nd4j-cuda-8.0-platform:0.9.1'
-    compile 'org.nd4j:nd4j-native-platform:0.9.1'
-    compile 'org.datavec:datavec-api:0.9.1'
+    compile "org.nd4j:nd4j-cuda-8.0-platform:${deeplearning4j}"
+    compile "org.nd4j:nd4j-native-platform:${deeplearning4j}"
+    compile "org.datavec:datavec-api:${deeplearning4j}"
 
-    compile 'org.deeplearning4j:deeplearning4j-parallel-wrapper_2.11:0.9.1'
-    compile 'org.deeplearning4j:dl4j-spark_2.11:0.9.1_spark_2'
-    compile 'org.deeplearning4j:deeplearning4j-ui_2.11:0.9.1'
+    compile "org.deeplearning4j:deeplearning4j-parallel-wrapper_2.11:${deeplearning4j}"
+    compile "org.deeplearning4j:dl4j-spark_2.11:${deeplearning4j}_spark_2"
+    compile "org.deeplearning4j:deeplearning4j-ui_2.11:${deeplearning4j}"
     compile('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
     compile('org.apache.hadoop:hadoop-common:2.7.2') {force = true}
     compile('org.apache.hadoop:hadoop-client:2.7.2') {force = true}
