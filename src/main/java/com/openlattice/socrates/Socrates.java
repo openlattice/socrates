@@ -395,7 +395,6 @@ public class Socrates {
         //Attach the StatsStorage instance to the UI: this allows the contents of the StatsStorage to be visualized
         uiServer.attach( statsStorage );
         MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
-                .iterations( iterations )
                 .weightInit( WeightInit.RELU )
                 .activation( Activation.RELU )
                 .miniBatch( true )
@@ -403,7 +402,6 @@ public class Socrates {
                 //.regularization( true ).l2( 1 )
                 //                .gradientNormalization( GradientNormalization.ClipL2PerLayer )
                 //                .gradientNormalizationThreshold( .1 )
-                .learningRate( .1 )
                 .list()
                 .backprop( true )
                 .layer( 0, new DenseLayer.Builder().nIn( numInputs ).nOut( 2 * numInputs )
