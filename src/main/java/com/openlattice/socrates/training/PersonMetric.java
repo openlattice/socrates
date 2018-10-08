@@ -40,11 +40,11 @@ public enum PersonMetric {
     FIRST_NAME_LHS_PROBA( lhsdouble( Person::getFirstProba ) ),
     FIRST_NAME_RHS_PROBA( rhsdouble( Person::getFirstProba ) ),
 
-    MIDDLE_NAME_STRING( jaroWinkler( p -> null ) ),
-    MIDDLE_NAME_METAPHONE( metaphone( p -> null ) ),
-    MIDDLE_NAME_METAPHONE_ALT( metaphoneAlternate( p -> null ) ),
-    MIDDLE_NAME_LHS_PRESENCE( lhs( p -> 0 ) ),
-    MIDDLE_NAME_RHS_PRESENCE( rhs( p -> 0 ) ),
+    MIDDLE_NAME_STRING( jaroWinkler( Person::getMiddleName ) ),
+    MIDDLE_NAME_METAPHONE( metaphone( Person::getMiddleName ) ),
+    MIDDLE_NAME_METAPHONE_ALT( metaphoneAlternate( Person::getMiddleName ) ),
+    MIDDLE_NAME_LHS_PRESENCE( lhs( Person::getHasMiddleName ) ),
+    MIDDLE_NAME_RHS_PRESENCE( rhs( Person::getHasMiddleName ) ),
 
     LAST_NAME_STRINGG( jaroWinkler( Person::getLastName ) ),
     LAST_NAME_METAPHONE( metaphone( Person::getLastName ) ),

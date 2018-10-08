@@ -86,6 +86,7 @@ public class Person implements Serializable {
     private final int intId;
     private final Optional<String> firstName;
     private final Optional<String> lastName;
+    private final Optional<String> middleName;
     private final Optional<String> sex;
     private final Optional<String> ssn;
     private final Optional<String> dob;
@@ -102,6 +103,7 @@ public class Person implements Serializable {
                 UUID.fromString(row.getAs("trainingId")),
                 tryParseID(row),
                 row.getAs("firstName"),
+                row.getAs("middlename"),
                 row.getAs("lastName"),
                 perturb && RandomUtils.nextBoolean() ? null : row.getAs("sex"),
                 perturb && RandomUtils.nextBoolean() ? null : row.getAs("ssn"),
@@ -116,6 +118,7 @@ public class Person implements Serializable {
         this.trainingId = UUID.fromString(p.getTrainingId());
         this.intId = p.getintId();
         this.firstName = Optional.fromNullable(p.getFirstName());
+        this.middleName = Optional.fromNullable(p.getMiddleName());
         this.lastName = Optional.fromNullable(p.getLastName());
         this.sex = Optional.fromNullable(perturb && RandomUtils.nextBoolean() ? null : p.getSex());
         this.ssn = Optional.fromNullable(perturb && RandomUtils.nextBoolean() ? null : p.getSsn());
@@ -134,6 +137,7 @@ public class Person implements Serializable {
             UUID trainingId,
             int intId,
             String firstName,
+            String middleName,
             String lastName,
             String sex,
             String ssn,
@@ -142,6 +146,7 @@ public class Person implements Serializable {
             String ethnicity) {
         this.trainingId = trainingId;
         this.firstName = Optional.fromNullable(firstName);
+        this.middleName = Optional.fromNullable(middleName);
         this.lastName = Optional.fromNullable(lastName);
         this.intId = intId;
         this.sex = Optional.fromNullable(sex);
@@ -179,6 +184,10 @@ public class Person implements Serializable {
         return firstName.orNull();
     }
 
+    public String getMiddleName() {
+        return middleName.orNull();
+    }
+
     public String getLastName() {
         return lastName.orNull();
     }
@@ -205,6 +214,10 @@ public class Person implements Serializable {
 
     public int getHasFirstName() {
         return firstName.isPresent() ? 1 : 0;
+    }
+
+    public int getHasMiddleName() {
+        return middleName.isPresent() ? 1 : 0;
     }
 
     public int getHasLastName() {
