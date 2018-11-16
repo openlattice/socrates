@@ -94,7 +94,7 @@ dependencies {
     compile 'commons-cli:commons-cli:1.4'
     compile "org.deeplearning4j:deeplearning4j-core:${deeplearning4j}"
 
-    compile "org.nd4j:nd4j-cuda-8.0-platform:${deeplearning4j}"
+    compile "org.nd4j:nd4j-cuda-9.2-platform:${deeplearning4j}"
     compile "org.nd4j:nd4j-native-platform:${deeplearning4j}"
     compile "org.datavec:datavec-api:${deeplearning4j}"
 

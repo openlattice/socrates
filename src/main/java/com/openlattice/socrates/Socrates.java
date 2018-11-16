@@ -456,7 +456,7 @@ public class Socrates {
                             logger.info(
                                     "\n\n\n*************  Intermediate Model Evaluation  *************\n\n\n" );
                             DataSet testDataSet = toBigDataSet( testData.next(), testing );
-                            INDArray output = model.output( testDataSet.getFeatureMatrix() );
+                            INDArray output = model.output( testDataSet.getFeatures() );
 
                             eval.eval( testDataSet.getLabels(), output );
                             logger.info( eval.stats() );
@@ -495,7 +495,7 @@ public class Socrates {
             //            model.fit( new IteratorDataSetIterator( ds,exampleCount ) );
             while ( testData.hasNext() ) {
                 DataSet testDataSet = toBigDataSet( testData.next(), testing );
-                INDArray output = model.output( testDataSet.getFeatureMatrix() );
+                INDArray output = model.output( testDataSet.getFeatures() );
 
                 eval.eval( testDataSet.getLabels(), output );
                 logger.info( eval.stats() );
