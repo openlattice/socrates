@@ -39,7 +39,7 @@ if (SOCRATES_XMX == 'null' || SOCRATES_XMX == null || SOCRATES_XMX == "") {
 }
 
 if (S_ARGS == 'null' || S_ARGS == null || S_ARGS == "") {
-    S_ARGS = 'cassandra spark local'
+    S_ARGS = 'spark local'
 }
 
 if( PARALLEL == 'null' || PARALLEL == null || PARALLEL == "" ) {
