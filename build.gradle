@@ -98,17 +98,12 @@ dependencies {
     compile "org.nd4j:nd4j-native-platform:${deeplearning4j}"
     compile "org.datavec:datavec-api:${deeplearning4j}"
 
-    compile "org.deeplearning4j:deeplearning4j-parallel-wrapper_2.11:${deeplearning4j}"
+    compile "org.deeplearning4j:deeplearning4j-parallel-wrapper:${deeplearning4j}"
     compile "org.deeplearning4j:dl4j-spark_2.11:${deeplearning4j}_spark_2"
     compile "org.deeplearning4j:deeplearning4j-ui_2.11:${deeplearning4j}"
     compile('org.apache.hadoop:hadoop-mapreduce-client-core:2.7.2') {force = true}
     compile('org.apache.hadoop:hadoop-common:2.7.2') {force = true}
     compile('org.apache.hadoop:hadoop-client:2.7.2') {force = true}
-//    compile "org.apache.spark:spark-core_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-sql_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-mllib_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-graphx_2.11:${spark_version}"
-//    compile "org.apache.spark:spark-streaming_2.11:${spark_version}"
     compile "org.ow2.asm:asm:5.0.4"
 
     if (project.hasProperty('developmentMode') && project.developmentMode) {
