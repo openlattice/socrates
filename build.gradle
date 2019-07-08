@@ -98,7 +98,7 @@ dependencies {
     compile "org.nd4j:nd4j-native-platform:${deeplearning4j}"
     compile "org.datavec:datavec-api:${deeplearning4j}"
 
-    compile "org.deeplearning4j:deeplearning4j-parallel-wrapper_2.11:${deeplearning4j}"
+    compile "org.deeplearning4j:deeplearning4j-parallel-wrapper:${deeplearning4j}"
     compile "org.deeplearning4j:dl4j-spark_2.11:${deeplearning4j}_spark_2"
     compile "org.deeplearning4j:deeplearning4j-ui_2.11:${deeplearning4j}"
     compile("org.apache.hadoop:hadoop-mapreduce-client-core:$hadoop_version") {force = true}
