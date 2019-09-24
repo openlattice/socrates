@@ -63,6 +63,7 @@ import org.deeplearning4j.api.storage.StatsStorage;
 import org.deeplearning4j.datasets.iterator.IteratorDataSetIterator;
 import org.deeplearning4j.eval.Evaluation;
 import org.deeplearning4j.nn.api.OptimizationAlgorithm;
+import org.deeplearning4j.nn.conf.BackpropType;
 import org.deeplearning4j.nn.conf.MultiLayerConfiguration;
 import org.deeplearning4j.nn.conf.NeuralNetConfiguration;
 import org.deeplearning4j.nn.conf.layers.DenseLayer;
@@ -403,7 +404,6 @@ public class Socrates {
                 //                .gradientNormalization( GradientNormalization.ClipL2PerLayer )
                 //                .gradientNormalizationThreshold( .1 )
                 .list()
-                .backprop( true )
                 .layer( 0, new DenseLayer.Builder().nIn( numInputs ).nOut( 2 * numInputs )
                         .build() )
 //                .layer( 1, new DenseLayer.Builder().nIn( 2 * numInputs ).nOut( numInputs )
@@ -415,6 +415,7 @@ public class Socrates {
                 .layer( 2, new OutputLayer.Builder( LossFunction.NEGATIVELOGLIKELIHOOD )
                         .activation( Activation.SOFTMAX )
                         .nIn( numInputs ).nOut( outputNum ).build() )
+                .backpropType( BackpropType.Standard )
                 .build();
         MultiLayerNetwork model = new MultiLayerNetwork( conf );
         model.init();
