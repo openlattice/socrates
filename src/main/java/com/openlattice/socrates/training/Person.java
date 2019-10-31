@@ -244,6 +244,12 @@ public class Person implements Serializable {
         return ethnicity.isPresent() ? 1 : 0;
     }
 
+    public int getFirstNameLength() {return firstName.or("").length(); }
+
+    public int getLastNameLength() {return lastName.or("").length(); }
+
+    public int getMiddleNameLength() {return middleName.or("").length(); }
+
     public int isMatch(Person other) {
         return trainingId.equals(other.trainingId) ? 1 : 0;
     }
