@@ -39,12 +39,16 @@ public enum PersonMetric {
     FIRST_NAME_RHS_PRESENCE( rhs( Person::getHasFirstName ) ),
     FIRST_NAME_LHS_PROBA( lhsdouble( Person::getFirstProba ) ),
     FIRST_NAME_RHS_PROBA( rhsdouble( Person::getFirstProba ) ),
+    FIRST_NAME_LHS_LENGTH( lhs( Person::getFirstNameLength ) ),
+    FIRST_NAME_RHS_LENGTH( rhs( Person::getFirstNameLength ) ),
 
     MIDDLE_NAME_STRING( jaroWinkler( Person::getMiddleName ) ),
     MIDDLE_NAME_METAPHONE( metaphone( Person::getMiddleName ) ),
     MIDDLE_NAME_METAPHONE_ALT( metaphoneAlternate( Person::getMiddleName ) ),
     MIDDLE_NAME_LHS_PRESENCE( lhs( Person::getHasMiddleName ) ),
     MIDDLE_NAME_RHS_PRESENCE( rhs( Person::getHasMiddleName ) ),
+    MIDDLE_NAME_LHS_LENGTH( lhs( Person::getMiddleNameLength ) ),
+    MIDDLE_NAME_RHS_LENGTH( rhs( Person::getMiddleNameLength ) ),
 
     LAST_NAME_STRINGG( jaroWinkler( Person::getLastName ) ),
     LAST_NAME_METAPHONE( metaphone( Person::getLastName ) ),
@@ -53,6 +57,8 @@ public enum PersonMetric {
     LAST_NAME_RHS_PRESENCE( rhs( Person::getHasLastName ) ),
     LAST_NAME_LHS_PROBA( lhsdouble( Person::getLastProba ) ),
     LAST_NAME_RHS_PROBA( rhsdouble( Person::getLastProba ) ),
+    LAST_NAME_LHS_LENGTH( lhs( Person::getLastNameLength ) ),
+    LAST_NAME_RHS_LENGTH( rhs( Person::getLastNameLength ) ),
 
     SEX_STRING( jaroWinkler( Person::getSex ) ),
     SEX_LHS_PRESENCE( lhs( Person::getHasSex ) ),
