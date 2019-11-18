@@ -53,8 +53,8 @@ if (GC == 'null' || GC == null || GC == "") {
 
 mainClassName = "com.openlattice.socrates.Socrates"
 applicationDefaultJvmArgs = [SOCRATES_XMS, SOCRATES_XMX, "-server", PARALLEL, GC]
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
 println "Using java args for running ${projectName}: " + Arrays.toString( applicationDefaultJvmArgs )
 

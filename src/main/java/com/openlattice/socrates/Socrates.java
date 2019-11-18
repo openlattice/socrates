@@ -137,6 +137,7 @@ public class Socrates {
             throw new FileExistsException( "File already exists." );
         } else {
             saveFile.delete();
+
         }
 
         SparkSession sparkSession = SparkSession.builder()
