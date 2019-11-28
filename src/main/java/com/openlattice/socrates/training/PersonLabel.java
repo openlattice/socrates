@@ -22,7 +22,7 @@ package com.openlattice.socrates.training;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.codec.language.DoubleMetaphone;
+
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
