@@ -20,32 +20,33 @@
 
 package com.openlattice.socrates.training;
 
-import com.google.common.base.Optional;
-import java.io.Serializable;
-import java.text.DecimalFormat;
-import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.spark.sql.Row;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
+import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.Optional;
+import java.util.UUID;
+
 /**
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public class Person implements Serializable {
-    private static DateTimeHelper dtHelper  = new DateTimeHelper( DateTimeZone.UTC, "MM/dd/yyyy" );
-    private static DateTimeHelper dtHelper2 = new DateTimeHelper( DateTimeZone.UTC, "yyyy-MM-dd" );
-    private static DecimalFormat  dd        = new DecimalFormat( "00" );
-    private final UUID             trainingId;
-    private final Optional<String> firstName;
-    private final Optional<String> lastName;
-    private final Optional<String> sex;
-    private final Optional<String> ssn;
-    private final Optional<String> dob;
-    private final Optional<String> ethnicity;
-    private final Optional<String> race;
-    private final Optional<String> dobStr;
+    private static DateTimeHelper   dtHelper  = new DateTimeHelper( DateTimeZone.UTC, "MM/dd/yyyy" );
+    private static DateTimeHelper   dtHelper2 = new DateTimeHelper( DateTimeZone.UTC, "yyyy-MM-dd" );
+    private static DecimalFormat    dd        = new DecimalFormat( "00" );
+    private final  UUID             trainingId;
+    private final  Optional<String> firstName;
+    private final  Optional<String> lastName;
+    private final  Optional<String> sex;
+    private final  Optional<String> ssn;
+    private final  Optional<String> dob;
+    private final  Optional<String> ethnicity;
+    private final  Optional<String> race;
+    private final  Optional<String> dobStr;
 
     public Person( Row row ) {
         this( row, false );
@@ -78,13 +79,13 @@ public class Person implements Serializable {
 
     public Person( Person p, boolean perturb ) {
         this.trainingId = UUID.fromString( p.getTrainingId() );
-        this.firstName = Optional.fromNullable( p.getFirstName() );
-        this.lastName = Optional.fromNullable( p.getLastName() );
-        this.sex = Optional.fromNullable( perturb && RandomUtils.nextBoolean() ? null : p.getSex() );
-        this.ssn = Optional.fromNullable( perturb && RandomUtils.nextBoolean() ? null : p.getSsn() );
-        this.dob = Optional.fromNullable( p.getDob() );
-        this.ethnicity = Optional.fromNullable( perturb && RandomUtils.nextBoolean() ? null : p.getRace() );
-        this.race = Optional.fromNullable( perturb && RandomUtils.nextBoolean() ? null : p.getEthnicity() );
+        this.firstName = Optional.ofNullable( p.getFirstName() );
+        this.lastName = Optional.ofNullable( p.getLastName() );
+        this.sex = Optional.ofNullable( perturb && RandomUtils.nextBoolean() ? null : p.getSex() );
+        this.ssn = Optional.ofNullable( perturb && RandomUtils.nextBoolean() ? null : p.getSsn() );
+        this.dob = Optional.ofNullable( p.getDob() );
+        this.ethnicity = Optional.ofNullable( perturb && RandomUtils.nextBoolean() ? null : p.getRace() );
+        this.race = Optional.ofNullable( perturb && RandomUtils.nextBoolean() ? null : p.getEthnicity() );
 
         if ( dob.isPresent() ) {
             dobStr = p.dobStr;
@@ -103,25 +104,25 @@ public class Person implements Serializable {
             String race,
             String ethnicity ) {
         this.trainingId = trainingId;
-        this.firstName = Optional.fromNullable( firstName );
-        this.lastName = Optional.fromNullable( lastName );
-        this.sex = Optional.fromNullable( sex );
-        this.ssn = Optional.fromNullable( ssn );
-        this.dob = dob == null ? Optional.absent() : Optional.fromNullable( dob.toString() );
-        this.race = Optional.fromNullable( race );
-        this.ethnicity = Optional.fromNullable( ethnicity );
+        this.firstName = Optional.ofNullable( firstName );
+        this.lastName = Optional.ofNullable( lastName );
+        this.sex = Optional.ofNullable( sex );
+        this.ssn = Optional.ofNullable( ssn );
+        this.dob = dob == null ? Optional.empty() : Optional.ofNullable( dob.toString() );
+        this.race = Optional.ofNullable( race );
+        this.ethnicity = Optional.ofNullable( ethnicity );
         if ( this.dob.isPresent() ) {
             this.dobStr = Optional.of(
                     dd.format( dob.getDayOfMonth() )
                             + dd.format( dob.getMonthOfYear() )
-                            + Integer.valueOf( dob.getYear() ) );
+                            + dob.getYear() );
         } else {
             dobStr = Optional.of( "" );
         }
     }
 
     public String getDobStr() {
-        return dobStr.or( "" );
+        return dobStr.orElse( "" );
     }
 
     public UUID getId() {
@@ -133,31 +134,31 @@ public class Person implements Serializable {
     }
 
     public String getFirstName() {
-        return firstName.orNull();
+        return firstName.orElse( null );
     }
 
     public String getLastName() {
-        return lastName.orNull();
+        return lastName.orElse( null );
     }
 
     public String getSex() {
-        return sex.orNull();
+        return sex.orElse( null );
     }
 
     public String getSsn() {
-        return ssn.orNull();
+        return ssn.orElse( null );
     }
 
     public String getDob() {
-        return dob.orNull();
+        return dob.orElse( null );
     }
 
     public String getRace() {
-        return race.orNull();
+        return race.orElse( null );
     }
 
     public String getEthnicity() {
-        return ethnicity.orNull();
+        return ethnicity.orElse( null );
     }
 
     public int getHasFirstName() {
