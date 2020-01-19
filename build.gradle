@@ -135,4 +135,15 @@ eclipse {
     ext.targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-eclipse.classpath.plusConfigurations += [configurations.provided] 
+eclipse.classpath.plusConfigurations += [configurations.provided]
+
+jar {
+    doFirst {
+        manifest {
+            attributes (
+                    "Class-Path": configurations.runtime.files.collect { it.getName() }.join(" "),
+                    "Main-Class": mainClassName
+            )
+        }
+    }
+}
