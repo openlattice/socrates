@@ -21,7 +21,7 @@ ext.scmUrl = 'scm:git:https://github.com/openlattice/socrates.git'
 ext.connectionUrl = 'scm:git:https://github.com/openlattice/socrates.git'
 ext.developerConnectionUrl = 'scm:git:https://github.com/openlattice/socrates.git'
 
-apply from: "https://raw.githubusercontent.com/openlattice/gradles/master/openlattice.gradle"
+apply from: "https://raw.githubusercontent.com/openlattice/gradles/hotfix-2020-02-20/openlattice.gradle"
 apply plugin: 'kotlin'
 
 def SOCRATES_XMS = "$System.env.SOCRATES_XMS"
