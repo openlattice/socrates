@@ -147,3 +147,14 @@ eclipse {
 }
 
 eclipse.classpath.plusConfigurations += [configurations.provided]
+
+jar {
+    doFirst {
+        manifest {
+            attributes (
+                    "Class-Path": configurations.runtime.files.collect { it.getName() }.join(" "),
+                    "Main-Class": mainClassName
+            )
+        }
+    }
+}
