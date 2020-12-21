@@ -84,6 +84,12 @@ spotbugsMain {
      }
 }
 
+spotbugsTest {
+  reports {
+    xml.enabled = false
+    html.enabled = true
+  }
+}
 println "Using java args for running ${projectName}: " + Arrays.toString( applicationDefaultJvmArgs )
 
 run {
