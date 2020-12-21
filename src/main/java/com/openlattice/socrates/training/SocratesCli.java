@@ -31,15 +31,15 @@ import org.apache.commons.cli.ParseException;
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public final class SocratesCli {
-    public static  String            HELP    = "help";
-    public static  String            MODEL   = "model";
-    public static  String            PEOPLE  = "people";
-    public static  String            WORKERS = "workers";
-    public static  String            SAMPLES = "samples";
+    public static final String            HELP    = "help";
+    public static final String            MODEL   = "model";
+    public static final String            PEOPLE  = "people";
+    public static final String            WORKERS = "workers";
+    public static final String            SAMPLES = "samples";
 
-    private static Options           options = new Options();
-    private static CommandLineParser clp     = new DefaultParser();
-    private static HelpFormatter     hf      = new HelpFormatter();
+    private static final Options           options = new Options();
+    private static final CommandLineParser clp     = new DefaultParser();
+    private static final HelpFormatter     hf  = new HelpFormatter();
 
     static {
         options.addOption( HELP, "Print help message." );

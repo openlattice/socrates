@@ -28,7 +28,7 @@ import java.util.concurrent.Executors;
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
 public class ThreadpoolHelper {
-    public static int                      procs    = Runtime.getRuntime().availableProcessors();
-    public static ListeningExecutorService executor = MoreExecutors
+    public static final int                      procs    = Runtime.getRuntime().availableProcessors();
+    public static final ListeningExecutorService executor = MoreExecutors
             .listeningDecorator( Executors.newFixedThreadPool( procs ) );
 }

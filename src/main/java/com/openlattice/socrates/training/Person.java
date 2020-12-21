@@ -20,6 +20,7 @@
 
 package com.openlattice.socrates.training;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.spark.sql.Row;
@@ -34,11 +35,12 @@ import java.util.UUID;
 /**
  * @author Matthew Tamayo-Rios &lt;matthew@openlattice.com&gt;
  */
+@SuppressFBWarnings("SE_BAD_FIELD")
 public class Person implements Serializable {
-    private static DateTimeHelper   dtHelper  = new DateTimeHelper( DateTimeZone.UTC, "MM/dd/yyyy" );
-    private static DateTimeHelper   dtHelper2 = new DateTimeHelper( DateTimeZone.UTC, "yyyy-MM-dd" );
-    private static DecimalFormat    dd        = new DecimalFormat( "00" );
-    private final  UUID             trainingId;
+    private static final DateTimeHelper dtHelper  = new DateTimeHelper( DateTimeZone.UTC, "MM/dd/yyyy" );
+    private static final DateTimeHelper dtHelper2 = new DateTimeHelper( DateTimeZone.UTC, "yyyy-MM-dd" );
+    private static final DecimalFormat  dd        = new DecimalFormat( "00" );
+    private final        UUID           trainingId;
     private final  Optional<String> firstName;
     private final  Optional<String> lastName;
     private final  Optional<String> sex;
