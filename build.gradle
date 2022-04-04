@@ -25,7 +25,6 @@ ext.connectionUrl = 'scm:git:https://github.com/openlattice/socrates.git'
 ext.developerConnectionUrl = 'scm:git:https://github.com/openlattice/socrates.git'
 
 apply from: "https://raw.githubusercontent.com/openlattice/openlattice/main/gradles/openlattice.gradle"
-apply plugin: 'kotlin'
 
 def SOCRATES_XMS = "$System.env.SOCRATES_XMS"
 def SOCRATES_XMX = "$System.env.SOCRATES_XMX"
@@ -145,6 +144,7 @@ dependencies {
     implementation "org.ow2.asm:asm:$asm_version"
     if( project.hasProperty('developmentMode') && project.developmentMode ) {
         implementation(project(path: ":rhizome"))
+        implementation(project(path: ":rhizome", configuration:"tests"))
         implementation(project(path: ":rhizome-client"))
         implementation(project(path: ":conductor-client"))
     } else {
