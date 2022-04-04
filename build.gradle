@@ -143,9 +143,14 @@ dependencies {
     implementation("org.apache.hadoop:hadoop-common:$hadoop_version") {force = true}
     implementation("org.apache.hadoop:hadoop-client:$hadoop_version") {force = true}
     implementation "org.ow2.asm:asm:$asm_version"
-
-    implementation "com.openlattice:rhizome:${rhizome_version}"
-    implementation "com.openlattice:conductor-client:${conductor_client_version}"
+    if( project.hasProperty('developmentMode') && project.developmentMode ) {
+        implementation(project(path: ":rhizome"))
+        implementation(project(path: ":rhizome-client"))
+        implementation(project(path: ":conductor-client"))
+    } else {
+        implementation "com.openlattice:rhizome:${rhizome_version}"
+        implementation "com.openlattice:conductor-client:${conductor_client_version}"
+    }
     /*
      * TESTING
      */
